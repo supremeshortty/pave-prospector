@@ -1,0 +1,4 @@
+{"hits": {"total": {"value": 2}, "hits": [
+ {"_id": "9001", "_source": {"complaint_id": "9001", "product": "Payday loan, title loan, personal loan, or advance loan", "issue": "Charged fees or interest you didn't expect", "complaint_what_happened": "On XX/XX/2026 the company attempted to withdraw the advance before payday. My account had insufficient funds and my bank charged me {$35.00}.", "date_received": "2026-09-14T12:00:00-05:00"}},
+ {"_id": "9002", "_source": {"complaint_id": "9002", "product": "Payday loan, title loan, personal loan, or advance loan", "issue": "Problem with additional add-on products", "complaint_what_happened": "I paid the subscription for months and was still not eligible for an advance.", "date_received": "2026-08-02T12:00:00-05:00"}}
+]}}

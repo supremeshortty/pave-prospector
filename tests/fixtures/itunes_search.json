@@ -1,0 +1,4 @@
+{"resultCount": 2, "results": [
+ {"trackId": 111, "trackName": "Some Other Budget App", "sellerName": "Other Co", "sellerUrl": "https://other.com", "userRatingCount": 900000, "averageUserRating": 4.1, "trackViewUrl": "https://apps.apple.com/us/app/id111", "primaryGenreName": "Finance"},
+ {"trackId": 222, "trackName": "Testlend: Cash Advance", "sellerName": "Testlend Inc.", "sellerUrl": "https://www.testlend.example/", "userRatingCount": 52000, "averageUserRating": 4.4123, "trackViewUrl": "https://apps.apple.com/us/app/id222", "primaryGenreName": "Finance"}
+]}

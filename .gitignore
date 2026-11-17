@@ -1,0 +1,14 @@
+# Run output: real names, emails and cached API responses. Never commit.
+output/
+.env
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+
+# OS
+.DS_Store

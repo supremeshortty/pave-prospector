@@ -1,0 +1,132 @@
+# Scoring model and rules for pave-prospector.
+# Change weights here; the code reads everything from this file.
+
+score_weights:
+  fit: 40        # how closely the company matches Pave's current customers
+  evidence: 30   # strength of public evidence that they have the problem Pave solves
+  timing: 20     # reasons to reach out now (hiring credit roles, new funding, launches)
+  reach: 10      # whether we found the right person and a way to contact them
+
+# Base fit points per segment (out of `fit`). Mirrors ICP.md priority order.
+segments:
+  cash_advance:   {label: "Cash advance / earned wage access", fit: 34}
+  personal_loans: {label: "Near-prime personal loans",         fit: 32}
+  cards:          {label: "Thin-file cards and credit builders", fit: 30}
+  smb:            {label: "Small-business lending",            fit: 28}
+  bnpl:           {label: "BNPL and lease-to-own",             fit: 24}
+  credit_union:   {label: "Credit unions and community banks", fit: 20}
+  debt_capital:   {label: "Debt capital providers",            fit: 18}
+  channel:        {label: "Channel partner (decisioning, partner bank)", fit: 16}
+
+# Extra fit points (capped at score_weights.fit).
+fit_bonus:
+  uses_bank_data_aggregator: 4   # Plaid, MX, Finicity, Quiltt seen on their site
+  uses_pave_partner: 3           # Taktile, Oscilar, LendAPI, Alloy, Cross River seen on their site
+  credit_team_hiring: 3          # open credit/risk role = an in-house team that owns a model
+
+# Gap types. Each maps public evidence to the Pave proof point that answers it.
+gaps:
+  # A sentence counts toward a gap only if it has a keyword AND one of `requires`, and none of `excludes`.
+  # That keeps "my card was declined at a store" or "they denied my dispute" from counting as an approval problem.
+  approvals:
+    label: "Good applicants getting declined"
+    weight: 10
+    keywords: ["denied", "declined", "denying", "declining", "not approved", "rejected", "not eligible", "ineligible", "don't qualify", "didn't qualify", "can't qualify", "won't approve", "never approved"]
+    requires: ["loan", "advance", "application", "applied", "apply", "approve", "approval", "credit", "borrow", "qualify", "eligible", "instacash", "cash out", "line of credit"]
+    excludes: ["claim", "dispute", "transaction", "purchase", "merchant", "fraud", "reservation", "refund", "support", "fee request", "card was declined", "card has been declined", "payment was declined", "declined my payment", "declined for payment", "available credit", "at the store", "checkout", "uber", "validate", "verify", "verification", "identity", "selfie", "driver"]
+    proof: "A Pave customer took new-user approvals from the low 70s to 91% with a score built on its own book, and repayment barely moved."
+  amounts:
+    label: "Advance or credit limits too small"
+    weight: 9
+    keywords: ["only approved for", "only gave me", "only let me", "only get", "only got", "only qualify for", "only qualified for", "only eligible for", "limit too low", "limit is too low", "low limit", "raise my limit", "increase my limit", "higher limit", "limit increase", "max is only", "barely any", "tiny advance", "small advance"]
+    requires: ["advance", "limit", "loan", "borrow", "approved", "instacash", "boost", "credit", "cash out"]
+    excludes: ["fee", "subscription", "membership", "tip"]
+    proof: "Super.com raised advance amounts while lowering defaults with Pave; another provider raised advance amounts 74%."
+  nsf_timing:
+    label: "Repayment pulls hitting before payday (NSF, overdraft, ACH returns)"
+    weight: 10
+    keywords: ["overdraft", "overdrafted", "overdrew", "nsf", "insufficient funds", "before payday", "before my paycheck", "before i got paid", "before i get paid", "took the money early", "withdrew early", "bounced", "returned payment", "kept trying to withdraw", "multiple attempts", "drained my account"]
+    requires: ["repay", "repayment", "payment", "took", "take", "withdraw", "pull", "debit", "pay back", "payback", "due date", "autopay", "collect", "advance", "loan", "paid", "account"]
+    excludes: ["annual fee", "membership fee", "overdraft protection", "no overdraft", "fee-free overdraft", "can't overdraft", "cannot overdraft", "can’t overdraft"]
+    proof: "Pave's income prediction cut NSFs 27% at a small-dollar lender, and an earned wage access provider cut ACH returns from 35% to 13%, back under the NACHA threshold."
+  repayment:
+    label: "Repayment and collections problems"
+    weight: 6
+    keywords: ["collections", "charged off", "charge-off", "defaulted", "past due", "harassing", "can't pay back", "couldn't pay back", "behind on payments"]
+    requires: ["loan", "payment", "advance", "debt", "balance", "pay"]
+    excludes: ["invest", "notes", "defaulted my payment"]
+    proof: "Pave's scores predict the first one to four repayments, and Self's SelfCash beat its first-advance repayment target on Pave's Cash Advance Score."
+
+# Used when there is no review/complaint evidence but the company is hiring a credit team.
+fallback_gaps:
+  model_capacity:
+    label: "Building credit models in-house (hiring now)"
+    proof: "Pave trains custom scores on a lender's own loan history and gives credit teams AI agents for model work, so a small team ships more models without adding headcount."
+
+# Hiring signals: open roles whose titles match these mean an in-house credit team.
+credit_role_patterns:
+  - "credit risk"
+  - "credit strategy"
+  - "credit analytics"
+  - "credit policy"
+  - "head of credit"
+  - "chief risk"
+  - "underwriting"
+  - "risk model"
+  - "risk analytics"
+  - "risk data scien"
+  - "decision science"
+  - "fraud and credit"
+  - "model risk"
+  - "portfolio risk"
+
+# News headlines matching these within `news_days` count as a timing trigger.
+news_days: 120
+news_triggers:
+  funding: ["raises", "raised", "funding", "series a", "series b", "series c", "series d", "seed round", "investment from"]
+  capital: ["credit facility", "debt facility", "warehouse", "forward flow", "forward-flow", "securitization", "asset-backed", "capital partner"]
+  launch: ["launches", "launched", "introduces", "rolls out", "expands", "new product", "partners with"]
+  pressure: ["cfpb", "lawsuit", "settlement", "regulator", "consent order", "losses", "charge-off", "delinquenc"]
+
+# Technology detected on a company's own website.
+tech_markers:
+  aggregators:
+    Plaid: ["plaid.com", "cdn.plaid.com", "plaid link", "powered by plaid"]
+    MX: ["mx.com", "mx technologies"]
+    Finicity: ["finicity"]
+    Quiltt: ["quiltt"]
+    Akoya: ["akoya"]
+  pave_partners:
+    Taktile: ["taktile"]
+    Oscilar: ["oscilar"]
+    LendAPI: ["lendapi"]
+    Alloy: ["alloy.com", "alloy.co"]
+    "Cross River Bank": ["cross river bank"]
+
+# Personas to look for, in priority order. Titles are matched case-insensitively.
+personas:
+  - key: credit_leader
+    label: "Head of Credit / Chief Risk Officer"
+    titles: ["chief risk officer", "chief credit officer", "head of credit", "head of risk", "vp of credit", "vp, credit", "vp credit", "vp of risk", "vp, risk", "vp risk", "director of credit", "credit risk director", "head of underwriting"]
+  - key: data_science
+    label: "Credit data science lead"
+    titles: ["head of data science", "director of data science", "risk analytics", "credit analytics", "decision science", "head of analytics", "chief data officer"]
+  - key: payments_ops
+    label: "Payments or operations lead"
+    titles: ["head of payments", "vp of payments", "director of payments", "head of operations", "vp of operations", "chief operating officer", "coo"]
+  - key: finance
+    label: "CFO / capital markets"
+    titles: ["chief financial officer", "cfo", "head of capital markets", "capital markets"]
+  - key: founder
+    label: "CEO / founder"
+    titles: ["chief executive officer", "ceo", "co-founder", "cofounder", "founder", "president"]
+
+# Never prospect these. Matched against company name and domain.
+exclude:
+  customers: [SoFi, Happy Money, Clair, Self, SelfCash, Super.com, True Financial, Ualett, FloatMe, ATM.com, Fizz, Ava, Atlas, Yendo, Arro, Lenme, Bloom Credit, GrailPay]
+  customer_domains: [sofi.com, happymoney.com, getclair.com, self.inc, super.com, truefinancial.com, ualett.com, floatme.io, atm.com, joinfizz.com, meetava.com, atlasfinancial.com, atlascard.com, yendo.com, arro.com, lenmeapp.com, bloomcredit.io, grailpay.com]
+  partners: [Taktile, Oscilar, LendAPI, Alloy, Cross River, Snowflake, Spinwheel, Method, Plaid, MX, Finicity, Quiltt]
+  competitors: [Plaid, Nova Credit, Prism Data, Experian, Equifax, TransUnion, FICO, Carrington Labs, Zest AI, Heron Data, Ocrolus, Inscribe, Argyle, Pinwheel]
+
+# Pave's investors. A target that shares one is a warm-intro path.
+pave_investors: [Better Tomorrow Ventures, Bessemer, 8VC]   # short names so 'led by Bessemer' matches

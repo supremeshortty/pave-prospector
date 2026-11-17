@@ -1,0 +1,116 @@
+# Starting accounts, grouped by ICP segment.
+# Only `name`, `domain` and `segment` are required. Everything else is discovered:
+#   app:   App Store search term, if different from the name
+#   cfpb:  text to look up the company's legal name in the CFPB complaint database
+#   ats:   job-board slug, if it isn't the domain name (e.g. "greenhouse:hellobrigit")
+#   notes: anything worth knowing before outreach
+#   warm:  known warm paths (shared lenders, partners, investors) the tool can't find on its own
+# Pave's customers, partners and competitors are excluded automatically (config/icp.yaml).
+
+accounts:
+  # --- 1. Cash advance and earned wage access ---
+  - {name: Dave, domain: dave.com, segment: cash_advance, cfpb: "Dave"}
+  - {name: MoneyLion, domain: moneylion.com, segment: cash_advance, cfpb: "MoneyLion"}
+  - {name: Brigit, domain: hellobrigit.com, segment: cash_advance, cfpb: "Brigit", notes: "Acquired by Upbound Group"}
+  - {name: EarnIn, domain: earnin.com, segment: cash_advance, cfpb: "Activehours", warm: ["Partner co-sell: Cross River Bank, a Pave partner, provided EarnIn a $150M credit facility (Sep 2025)"]}
+  - {name: Cleo, domain: meetcleo.com, segment: cash_advance, cfpb: "Cleo AI"}
+  - {name: Albert, domain: albert.com, segment: cash_advance, cfpb: "Albert"}
+  - {name: Klover, domain: klover.app, segment: cash_advance, cfpb: "Klover"}
+  - {name: Grid, domain: getgrid.app, segment: cash_advance, app: "Grid Money"}
+  - {name: Possible Finance, domain: possiblefinance.com, segment: cash_advance, cfpb: "Possible Financial"}
+  - {name: B9, domain: b9.com, segment: cash_advance, app: "B9 cash advance"}
+  - {name: Empower, domain: empower.me, segment: cash_advance, cfpb: "Empower Finance"}
+  - {name: Gerald, domain: joingerald.com, segment: cash_advance, app: "Gerald cash advance"}
+  - {name: Beem, domain: trybeem.com, segment: cash_advance, app: "Beem cash advance"}
+  - {name: Vola, domain: vola.finance, segment: cash_advance, app: "Vola cash advance"}
+  - {name: Bright Money, domain: brightmoney.co, segment: cash_advance}
+  - {name: Payactiv, domain: payactiv.com, segment: cash_advance, cfpb: "Payactiv"}
+  - {name: DailyPay, domain: dailypay.com, segment: cash_advance, cfpb: "DailyPay"}
+  - {name: Branch, domain: branchapp.com, segment: cash_advance, app: "Branch: Get Paid Instantly"}
+  - {name: Rain, domain: rain.us, segment: cash_advance, app: "Rain instant pay"}
+  - {name: Tapcheck, domain: tapcheck.com, segment: cash_advance}
+  - {name: ZayZoon, domain: zayzoon.com, segment: cash_advance}
+  - {name: Varo Bank, domain: varomoney.com, segment: cash_advance, cfpb: "Varo"}
+  - {name: Current, domain: current.com, segment: cash_advance, cfpb: "Finco Services"}
+  - {name: Chime, domain: chime.com, segment: cash_advance, cfpb: "Chime", notes: "MyPay advances; very large account"}
+  - {name: Cash App Borrow, domain: cash.app, segment: cash_advance, app: "Cash App", notes: "Part of Block; enterprise-scale"}
+
+  # --- 2. Near-prime personal installment loans ---
+  - {name: Upgrade, domain: upgrade.com, segment: personal_loans, cfpb: "Upgrade"}
+  - {name: Best Egg, domain: bestegg.com, segment: personal_loans, cfpb: "Marlette"}
+  - {name: Avant, domain: avant.com, segment: personal_loans, cfpb: "Avant"}
+  - {name: LendingClub, domain: lendingclub.com, segment: personal_loans, cfpb: "LendingClub"}
+  - {name: Prosper, domain: prosper.com, segment: personal_loans, cfpb: "Prosper"}
+  - {name: Oportun, domain: oportun.com, segment: personal_loans, cfpb: "Oportun"}
+  - {name: OppFi, domain: oppfi.com, segment: personal_loans, cfpb: "OppFi"}
+  - {name: Achieve, domain: achieve.com, segment: personal_loans, cfpb: "Achieve"}
+  - {name: Reach Financial, domain: reachfinancial.com, segment: personal_loans}
+  - {name: LendingPoint, domain: lendingpoint.com, segment: personal_loans, cfpb: "LendingPoint"}
+  - {name: Mariner Finance, domain: marinerfinance.com, segment: personal_loans, cfpb: "Mariner Finance"}
+  - {name: OneMain Financial, domain: onemainfinancial.com, segment: personal_loans, cfpb: "OneMain"}
+  - {name: Lendmark Financial, domain: lendmarkfinancial.com, segment: personal_loans, cfpb: "Lendmark"}
+  - {name: "Enova (CashNetUSA, NetCredit)", domain: enova.com, segment: personal_loans, cfpb: "Enova"}
+  - {name: Upstart, domain: upstart.com, segment: personal_loans, cfpb: "Upstart", notes: "Runs its own AI underwriting; harder sell"}
+  - {name: Stilt, domain: stilt.com, segment: personal_loans}
+  - {name: Kikoff, domain: kikoff.com, segment: cards, cfpb: "Kikoff"}
+
+  # --- 3. Thin-file cards, charge cards and credit builders ---
+  - {name: Mission Lane, domain: missionlane.com, segment: cards, cfpb: "Mission Lane"}
+  - {name: Tomo, domain: tomocredit.com, segment: cards, cfpb: "TomoCredit"}
+  - {name: Grow Credit, domain: growcredit.com, segment: cards}
+  - {name: Extra, domain: extra.app, segment: cards, app: "Extra debit card credit"}
+  - {name: Perpay, domain: perpay.com, segment: cards, cfpb: "Perpay"}
+  - {name: Cred.ai, domain: cred.ai, segment: cards}
+  - {name: Firstcard, domain: firstcard.app, segment: cards}
+  - {name: Sable, domain: sablecard.com, segment: cards}
+  - {name: StellarFi, domain: stellarfi.com, segment: cards}
+  - {name: Credit Strong, domain: creditstrong.com, segment: cards}
+  - {name: Petal, domain: petalcard.com, segment: cards, notes: "Acquired by Empower"}
+  - {name: Imprint, domain: imprint.co, segment: cards}
+
+  # --- 4. Small-business lending ---
+  - {name: Bluevine, domain: bluevine.com, segment: smb}
+  - {name: Fundbox, domain: fundbox.com, segment: smb}
+  - {name: Kapitus, domain: kapitus.com, segment: smb}
+  - {name: Credibly, domain: credibly.com, segment: smb}
+  - {name: Fora Financial, domain: forafinancial.com, segment: smb}
+  - {name: Rapid Finance, domain: rapidfinance.com, segment: smb}
+  - {name: National Funding, domain: nationalfunding.com, segment: smb}
+  - {name: OnDeck, domain: ondeck.com, segment: smb, notes: "Part of Enova"}
+  - {name: Parafin, domain: parafin.com, segment: smb}
+  - {name: Wayflyer, domain: wayflyer.com, segment: smb}
+  - {name: Clearco, domain: clear.co, segment: smb}
+  - {name: Lendio, domain: lendio.com, segment: smb}
+  - {name: iBusiness Funding, domain: ibusinessfunding.com, segment: smb}
+  - {name: AtoB, domain: atob.com, segment: smb, notes: "Fleet and fuel cards"}
+  - {name: Coast, domain: coastpay.com, segment: smb, notes: "Fleet cards"}
+  - {name: Mudflap, domain: mudflap.com, segment: smb}
+  - {name: Slope, domain: slopepay.com, segment: smb}
+
+  # --- 5. BNPL and lease-to-own ---
+  - {name: Sezzle, domain: sezzle.com, segment: bnpl, cfpb: "Sezzle"}
+  - {name: Zip, domain: zip.co, segment: bnpl, cfpb: "Zip Co"}
+  - {name: Katapult, domain: katapult.com, segment: bnpl}
+  - {name: Snap Finance, domain: snapfinance.com, segment: bnpl, cfpb: "Snap Finance"}
+  - {name: Acima, domain: acima.com, segment: bnpl, cfpb: "Acima"}
+  - {name: Koalafi, domain: koalafi.com, segment: bnpl}
+  - {name: Uplift, domain: uplift.com, segment: bnpl}
+  - {name: Credova, domain: credova.com, segment: bnpl}
+  - {name: Kafene, domain: kafene.com, segment: bnpl}
+
+  # --- 8. Channel partners (decisioning, loan servicing, partner banks) ---
+  - {name: Provenir, domain: provenir.com, segment: channel}
+  - {name: LoanPro, domain: loanpro.io, segment: channel}
+  - {name: Canopy Servicing, domain: canopyservicing.com, segment: channel}
+  - {name: Peach Finance, domain: peachfinance.com, segment: channel}
+  - {name: Lead Bank, domain: lead.bank, segment: channel}
+  - {name: Column, domain: column.com, segment: channel}
+  - {name: Pathward, domain: pathward.com, segment: channel}
+  - {name: Celtic Bank, domain: celticbank.com, segment: channel}
+  - {name: WebBank, domain: webbank.com, segment: channel}
+  - {name: FinWise Bank, domain: finwise.bank, segment: channel}
+
+  # --- 7. Debt capital providers ---
+  - {name: Victory Park Capital, domain: victoryparkcapital.com, segment: debt_capital}
+  - {name: Atalaya Capital, domain: atalayacap.com, segment: debt_capital}
+  - {name: Castlelake, domain: castlelake.com, segment: debt_capital}
